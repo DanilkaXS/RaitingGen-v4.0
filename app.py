@@ -1,4 +1,5 @@
 import json
+import random
 
 from flask import Flask, render_template, request, redirect, send_file
 import time
@@ -21,7 +22,8 @@ def generator():
     print(data)
 
     wb = Workbook()
-    wb.save(filename=f'{data["group"]}.xlsx')
+    number = random.randint(0,1000)
+    wb.save(filename=f'{data["group"]}{number}.xlsx')
 
     def main_gen(wb, NAME, GROUP, FACULT, NUM_DIC, DIC_LIST, credit):
         NAME = NAME.split()
@@ -175,7 +177,7 @@ def generator():
         return outputConsole
 
     def golovna(GROUP, FACULT, SPEC_NAME, COURSE, B_M, STD_LIST, numberStudents, listStudentsReload):
-        wb = openpyxl.load_workbook(filename=f'{GROUP}.xlsx')
+        wb = openpyxl.load_workbook(filename=f'{GROUP}{number}.xlsx')
         print("Створення головного листа...")
         ws = wb.active
 
@@ -260,11 +262,11 @@ def generator():
         ws.row_dimensions[12 + numberStudents + 1].height = 102
         ws.row_dimensions[4].height = 32
         ws.row_dimensions[10].height = 6
-        wb.save(filename=f'{GROUP}.xlsx')
+        wb.save(filename=f'{GROUP}{number}.xlsx')
         print("Головний лист створено та збережено")
 
     def lastStep(GROUP, B_M, numberStudents):
-        wb = openpyxl.load_workbook(filename=f'{GROUP}.xlsx')
+        wb = openpyxl.load_workbook(filename=f'{GROUP}{number}.xlsx')
         print("Виставлення шрифтів...")
         time.sleep(1)
         ws = wb.active
@@ -273,9 +275,9 @@ def generator():
             ws[f'C{(13 + (i - 1))}'] = f"=G{(13 + (i - 1))}*0.9"
             ws[f'D{(13 + (i - 1))}'] = f"=H{(13 + (i - 1))}*0.1"
 
-        wb.save(filename=f'{GROUP}.xlsx')
+        wb.save(filename=f'{GROUP}{number}.xlsx')
 
-        wb = openpyxl.load_workbook(filename=f'{GROUP}.xlsx')
+        wb = openpyxl.load_workbook(filename=f'{GROUP}{number}.xlsx')
 
         ws = wb.active
 
@@ -309,7 +311,7 @@ def generator():
         __format_ws__(ws=ws, cell_range=f'C13:C{12 + numberStudents}',
                       size_text=12, ha='center', va='center')
 
-        wb.save(filename=f'{GROUP}.xlsx')
+        wb.save(filename=f'{GROUP}{number}.xlsx')
         print(f"Файл збережено під назвою '{GROUP}.xlsx")
 
     ########################################## Создание страницы для студента ##########################################
@@ -320,7 +322,7 @@ def generator():
                  FACULT=data["facultet"], NUM_DIC=data["numberDiscuplin"], DIC_LIST=data["listDiscuplin"],
                  credit=data["credit"])
 
-        wb.save(filename=f'{data["group"]}.xlsx')
+        wb.save(filename=f'{data["group"]}{number}.xlsx')
 
     ########################################## Создание главной страницы ##########################################
     def getBudContStudents(listStudents, numberStudents):
@@ -340,9 +342,9 @@ def generator():
             except:
                 name = listStudents[i][:-2]
 
-            if budOrContr[1] == 'б':
+            if budOrContr[1].lower() == 'б':
                 listBudget.append(name)
-            elif budOrContr[1] == 'к':
+            elif budOrContr[1].lower() == 'к':
                 listContract.append(name)
 
         listStudentsReload.append(listBudget)
@@ -361,7 +363,7 @@ def generator():
     lastStep(GROUP=data["group"], B_M=int(data["numberBadgetMist"]),
              numberStudents=int(data["numberStudents"]))
 
-    return f'{data["group"]}.xlsx'
+    return f'{data["group"]}{number}.xlsx'
 
 
 @app.route('/download_file')
