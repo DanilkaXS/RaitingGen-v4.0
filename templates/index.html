@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>RaitingGen v4.0</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        function send_data() {
+
+            var listStudents = $("#listStudents").val().split("\n")
+
+            var Discuplins = $("#listDiscuplin").val().split("\n")
+
+            var listDiscuplin = []
+            var credit = []
+
+            console.log(Discuplins)
+
+            for (let i = 0; i < $("#numberDiscuplin").val(); i++) {
+                listDiscuplin.push(Discuplins[i].split("%")[0])
+                credit.push(Discuplins[i].split("%")[1])
+            }
+
+
+            var result_return
+            var data = {
+                "navchYear": $("#navchYear").val(),
+                "facultet": $("#facultet").val(),
+                "facultetDescription": $("#facultetDescription").val(),
+                "semestr": $("#semestr").val(),
+                "group": $("#group").val(),
+                "specName": $("#specName").val(),
+                "course": $("#course").val(),
+                "numberBadgetMist": $("#numberBadgetMist").val(),
+                "numberStudents": $("#numberStudents").val(),
+
+                "listStudents": listStudents,
+
+                "numberDiscuplin": $("#numberDiscuplin").val(),
+
+                "listDiscuplin": listDiscuplin,
+                "credit": credit,
+            }
+
+
+            let send = $.ajax({
+                url: '/',
+                method: 'post',
+                contentType: "application/json",
+                dataType: 'json',
+                data: JSON.stringify(data),
+                async: false,
+                success: function (result) {
+                    result_return = result;
+                }
+            }).responseText;
+            console.log(send)
+            $("#body").append(`<a href='/download_file' ><button type='button' class='btn btn-primary' style='font-size: 20px'>⏬ Завантажити результат ⏬</button></a>`)
+        }
+    </script>
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6 text-center">
+                <h2 class="mb-4">✔ RaitingGen v4.0 👾</h2>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+        <label for="navchYear">Навчальний рік</label>
+        <input type="text" class="form-control" id="navchYear">
+    </div>
+
+    <div class="form-group">
+        <label for="facultet">Ініціали факультета</label>
+        <input type="text" class="form-control" id="facultet">
+    </div>
+
+    <div class="form-group">
+        <label for="facultetDescription">Повна назва факультету</label>
+        <input type="text" class="form-control" id="facultetDescription">
+    </div>
+
+    <div class="form-group">
+        <label for="semestr">Семестр</label>
+        <input type="text" class="form-control" id="semestr">
+    </div>
+    <div class="form-group">
+        <label for="group">Група</label>
+        <input type="text" class="form-control" id="group">
+    </div>
+    <div class="form-group">
+        <label for="specName">Спеціальність</label>
+        <input type="text" class="form-control" id="specName">
+    </div>
+    <div class="form-group">
+        <label for="course">Курс</label>
+        <input type="text" class="form-control" id="course">
+    </div>
+    <div class="form-group">
+        <label for="numberBadgetMist">Кількість бюджетних місць</label>
+        <input type="text" class="form-control" id="numberBadgetMist">
+    </div>
+    <div class="form-group">
+        <label for="numberStudents">Кількість студентів</label>
+        <input type="number" class="form-control" id="numberStudents">
+    </div>
+    <div class="form-group">
+        <label for="listStudents">Список студентів</label>
+        <p class="form-control" id="listStudentsTEst">Приклад: <b>Тимофєєв Данило Олексійович%б</b> або <b>Тимофєєв
+            Данило
+            Олексійович%к</b> в залежності від навчання</p>
+        <textarea class="form-control" id="listStudents" rows="1"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="numberDiscuplin">Кількість дисциплін</label>
+        <input type="number" class="form-control" id="numberDiscuplin">
+    </div>
+    <div class="form-group">
+        <label for="listDiscuplin">Список студентів</label>
+        <p class="form-control" id="listStudentsTEst">Приклад <b>Дисципліна%4</b> Диципліна та кількість кредитів
+            обов'язково треба встановлювати </p>
+        <textarea class="form-control" id="listDiscuplin" rows="1"></textarea>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6 text-center" id="body">
+                <button class="btn btn-primary" onclick="send_data()">👾 Створити 👾</button>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div class="container">
+    <footer class="py-3 my-4">
+        <p class="text-center text-muted">&copy; 2024 DanilkaXs, Inc</p>
+    </footer>
+</div>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
