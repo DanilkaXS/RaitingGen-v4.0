@@ -360,14 +360,14 @@ def generator():
 
     lastStep(GROUP=data["group"], B_M=int(data["numberBadgetMist"]),
              numberStudents=int(data["numberStudents"]))
-    global group
-    group = f'{data["group"]}.xlsx'
-    return "OK"
+
+    return f'{data["group"]}.xlsx'
 
 
 @app.route('/download_file')
 def download_file():
-    return send_file(group)
+
+    return send_file(request.args["id"])
 
 
 if __name__ == '__main__':

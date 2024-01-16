@@ -57,7 +57,15 @@
                 }
             }).responseText;
             console.log(send)
-            $("#body").append(`<a href='/download_file' ><button type='button' class='btn btn-primary' style='font-size: 20px'>⏬ Завантажити результат ⏬</button></a>`)
+
+            function parse(str) {
+                var args = [].slice.call(arguments, 1),
+                    i = 0;
+
+                return str.replace(/%s/g, () => args[i++]);
+            }
+
+            $("#body").append(parse("<a href='/download_file?id=%s' ><button type='button' class='btn btn-primary' style='font-size: 20px'>⏬ Завантажити результат ⏬</button></a>", send))
         }
     </script>
 </head>
@@ -71,7 +79,6 @@
             </div>
         </div>
     </div>
-
 
 
     <div class="form-group">
@@ -125,7 +132,7 @@
         <input type="number" class="form-control" id="numberDiscuplin">
     </div>
     <div class="form-group">
-        <label for="listDiscuplin">Список студентів</label>
+        <label for="listDiscuplin">Список дисциплін</label>
         <p class="form-control" id="listStudentsTEst">Приклад <b>Дисципліна%4</b> Диципліна та кількість кредитів
             обов'язково треба встановлювати </p>
         <textarea class="form-control" id="listDiscuplin" rows="1"></textarea>
